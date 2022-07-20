@@ -25,8 +25,13 @@ def main():  # основная функция
         with app:  # начинаем работу с юзерботом
             for link in chats:  # проходим по списку id чатов
                 join_in_chat(link)  # запуск функции для входа в чат
-                for user in app.get_chat_members(app.get_chat(link).id):  # берем профили пользователей из группы
-                    names.append(user.user.username)  # берем имя пользователя и добавляем его в список
+                id = app.get_chat(link).id  # id группы
+                if -100 in id:  # проверяем есть ли -100 у id
+                    for user in app.get_chat_members(app.get_chat(link).id):  # берем профили пользователей из группы
+                        names.append(user.user.username)  # берем имя пользователя и добавляем его в список
+                else:  # если нет то
+                    for user in app.get_chat_members(int(f"-100{str(id)}")):  # берем профили пользователей из группы по id и добавляем -100
+                        names.append(user.user.username)  # берем имя пользователя и добавляем его в список
         return names  # возвращаем список имен
 
     names = set(getnames())  # вписываем в переменную names ( уникальный с помощью set() ) список имен который вернула функция getnames
